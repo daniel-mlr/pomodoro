@@ -50,3 +50,6 @@ Thumbs.db
 *.swp
 */bootstrap*
 js/jquery*
+Session.vim
+img/*
+tags

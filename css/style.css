@@ -18,3 +18,16 @@ h1 {
     text-align: center;
     border: 2px solid black;
 }
+svg {
+    width: 300px;
+    height: 400px;
+    background-color: lightgray;
+}
+#test1 {
+}
+
+
+#lhaut {
+    height: 20px;
+    fill: red;
+}
