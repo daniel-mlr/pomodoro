@@ -14,6 +14,7 @@ h1 {
     float: right;
 }
 #pom {
+    position: relative;
     clear:both;
     text-align: center;
     border: 2px solid black;
@@ -25,9 +26,34 @@ svg {
 }
 #test1 {
 }
-
-
+.showtime {
+    font-size: 500%;
+    font-family: Impact, Charcoal, sans-serif;
+    font-style: italic;
+    /*font-weight: 600;*/
+    opacity: 0.1;
+    text-align: center;
+    position: absolute;
+    left: 27%;
+}
+#remain {
+    top: 10%;
+    display: none;
+}
+#runned {
+    top: 70%;
+    display: none;
+}
+#glass {
+    /*transform: rotate(20deg);*/
+}
 #lhaut {
     height: 20px;
     fill: red;
+}
+#liquideFlux {
+    display: none;
+}
+#start {
+    text-align: center;
 }
