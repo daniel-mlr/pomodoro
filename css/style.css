@@ -18,11 +18,13 @@ h1 {
     clear:both;
     text-align: center;
     border: 2px solid black;
+    /*background-color: white;*/
 }
 svg {
-    width: 300px;
+    width: 400px;
     height: 400px;
-    background-color: lightgray;
+    /*background-color: lightgray;*/
+    /*transform: rotate(20deg);*/
 }
 #test1 {
 }
@@ -46,14 +48,40 @@ svg {
 }
 #glass {
     /*transform: rotate(20deg);*/
+    transform-origin: 50% 50%;
 }
-#lhaut {
+#haut.liquide {
+    position: absolute;
+    background-color: red;
+    top: 30px;
+    left: 48px;
+    left: 0;
+    height: 180px;
+    width: 400px;
+    z-index: -1;
+}
+#bas.liquide {
+    /*
+    background-color: red;
     height: 20px;
-    fill: red;
+    width: 300px;
+    */
 }
-#liquideFlux {
+#flux.liquide {
     display: none;
 }
 #start {
     text-align: center;
+}
+#hourglass {
+    position: relative;
+    top: 0px;
+}
+#liquideHaut {
+}
+#liquideBas {
+    transform-origin: 150px 200px;
+}
+#liquideFlux {
+    display: none;
 }
