@@ -1,39 +1,80 @@
 var hourglass = (function () {
-    var time = 6500;
+    var time = 6000;
     var timeMark = 0;
     var upside = true;
 
-    var ltemp;
-    var lhaut = $("svg").find("#liquideHaut").find("rect");
-    var lbas = $("svg").find("#liquideBas").find("rect");
+    var lhaut = $("svg").find("#liquideHaut");
+    var lbas = $("svg").find("#liquideBas");
     var lflux = $("svg").find("#liquideFlux");
+    var lturn = $("svg").find("#glass").find("#liquidTurn");
 
-    // lflux.css("display", "initial");
-    var rotateTime = 5000;
+    var rotateTime = 1000;
     var changeColorPink = {backgroundColor: "#A21200"};
     var changeColorGreen = {backgroundColor: "#12FA00"};
 
     function rotateGlass() {
+        // upside 
         if (upside) {
 
+            lturn.find("rect").attr("y", "325px");
+            lturn.find("rect").attr("height", "140px");
+            lturn.css("display", "inline");
+            lhaut.css("display", "none");
+            lhaut.find("rect").attr("y", "85px");
+            lhaut.find("rect").attr("height", "180px");
+            lbas.css("display","none");
+            lbas.find("rect").attr("y", "465px");
+            lbas.find("rect").attr("height", "0");
+            
             $("#glass").velocity({ 
                 rotateZ: "180deg" 
             }, rotateTime);
+            
+            lturn.find("rect").velocity({
+                y: "265px",
+                height: "180px"
 
-            $("svg").find("#liquideBas").find("rect").velocity({
-                /*
-                y: 0, height: 180
-                */
-                rotateZ: "180deg"
-            }, rotateTime );
+            }, {
+                delay: rotateTime,
+                complete: function () {
+                   // lflux.css("display", "inline");
+                    lturn.css("display", "none");
+                    lhaut.css("display", "inline");
+                    lbas.css("display", "inline");
+                    runFluid();
+                }
+            });
             upside = false;
+        
         } else {
+            // reversed
+            lbas.css("display", "none");
+            lhaut.css("display", "none");
+            lturn.find("rect").attr("y", "65px");
+            lturn.find("rect").attr("height", "140px");
+            lturn.css("display", "inline");
             $("#glass").velocity({ rotateZ: "0deg" }, rotateTime);
-            /*
-               ltemp = lhaut;
-               lhaut = $("svg").find("#liquideBas").find("rect");
-               lbas = ltemp;
-               */
+            
+            lturn.find("rect").velocity({
+                y: "85px",
+                height: "180px"
+
+            }, {
+                delay: rotateTime,
+                complete: function () {
+                   // lflux.css("display", "inline");
+                    lturn.css("display", "none");
+                    lhaut.find("rect").attr("y", "85px");
+                    lhaut.find("rect").attr("height", "180px");
+                    lhaut.css("display", "inline");
+                    lbas.find("rect").attr("y", "465px");
+                    lbas.find("rect").attr("height", "0px");
+                    lbas.css("display", "inline");
+
+                    runFluid();
+                }
+            });
+           
             upside = true;
         }
         console.log("upside:", upside);
@@ -42,8 +83,8 @@ var hourglass = (function () {
 
     function runFluid () {
         // fluid in upper part is flowing down
-        lhaut.velocity({
-            y: 200, // from 20
+        lhaut.find("rect").velocity({
+            y: 265, // from ...
             height: 0 // from 180
         }, {
             duration: time, 
@@ -73,9 +114,9 @@ var hourglass = (function () {
         });
 
         // fluid accumulates in glass' lower part
-        lbas.velocity({
-            y: 260,      // from 400
-            height: 185  // from 0
+        lbas.find("rect").velocity({
+            y: 325,      // from ...
+            height: 140  // from 0
         },
         {
             duration: time,
