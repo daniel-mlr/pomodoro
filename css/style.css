@@ -26,8 +26,6 @@ h1 {
 svg {
     width: 500px;
     height: 530px;
-    /*background-color: lightgray;*/
-    /*transform: rotate(20deg);*/
 }
 #test1 {
 }
@@ -42,7 +40,7 @@ svg {
     z-index: 1;
 }
 #remain {
-    top: 15%;
+    top: 18%;
     display: none;
 }
 #runned {
@@ -50,9 +48,9 @@ svg {
     display: none;
 }
 #glass {
-    /*transform: rotate(20deg);*/
     transform-origin: 50% 50%;
 }
+/*
 #haut.liquide {
     position: absolute;
     background-color: red;
@@ -64,15 +62,14 @@ svg {
     z-index: -1;
 }
 #bas.liquide {
-    /*
     background-color: red;
     height: 20px;
     width: 300px;
-    */
 }
 #flux.liquide {
     display: none;
 }
+*/
 #start {
     text-align: center;
 }
@@ -81,23 +78,38 @@ svg {
     top: 0px;
 }
 #liquideHaut {
-    display: inline;
     display: none;
+}
+#liquideHaut rect {
+    fill: #E40008;
 }
 #liquideBas {
+    /*display: none;*/
+}
+#liquideBas rect {
+    fill: #E40008;
 }
 #liquideFlux {
-    display: inline;
     display: none;
 }
-.hgcol {
-    fill: "#806A23";
-          stroke: black;
-    stroke-width: 3px;
+#liquideFlux rect{
+    fill: #E40008;
 }
+
 #liquidTurn {
+    fill: #E40008;
     display: none;
 }
 #liquidTurn rect {
-    fill: blue;
+    fill: red;
+}
+
+.hgcol {
+    fill: #806A23;
+    stroke: black;
+    stroke-width: 3px;
+}
+.hgframe {
+    fill: blue; 
+    stroke: black;
 }
