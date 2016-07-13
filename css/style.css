@@ -7,11 +7,33 @@
 h1 {
     text-align: center;
 }
-#breakset {
-    float: left;
-}
 #sessionset {
+    float: left;
+    margin-left: 50px;
+    width: 140px;
+}
+#breakset {
     float: right;
+    margin-right: 50px;
+    width: 140px;
+}
+#slider1 {
+    /*float: left;*/
+}
+#slider2 {
+    /*float: right;*/
+}
+#work-icon {
+}
+.slider-img {
+    /*
+    position: absolute;
+    top: 30px;
+    left: 35px;
+    z-index: 10;
+    */
+}
+#slider2 {
 }
 #pom {
     position: relative;
@@ -71,6 +93,7 @@ svg {
 }
 */
 #start {
+    display: inline;
     text-align: center;
 }
 #hourglass {
@@ -112,4 +135,22 @@ svg {
 .hgframe {
     fill: blue; 
     stroke: black;
+}
+.rs-range-color {
+    background-color: red;
+}
+.rs-tooltip {
+    /*border: 2px solid red;*/
+}
+#slider1 .rs-tooltip div {
+    width: 70px;
+    height: 90px;
+}
+#slider2 .rs-tooltip div {
+    width: 70px;
+    height: 90px;
+}
+.rs-tooltip > img {
+}
+#work-icon {
 }

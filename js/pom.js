@@ -13,13 +13,20 @@ var hourglass = (function () {
 
     function setWorkTime(time) {
         workTime = time;
+        testTime(workTime, breakTime);
     }
     function setBreakTime(time) {
         breakTime = time;
+        testTime(workTime, breakTime);
+    }
+    
+    function testTime(t1, t2) {
+        console.log("temp1:" + t1 + ", temp2:" + t2);
     }
     
     function rotateGlass() {
         // hourglass is upside (starting state)
+        console.log("je vois workTime, ", workTime, ", et breakTime, ", breakTime);
         if (upside) {
 
             // during rotation, a dummy element (lturn)
@@ -58,7 +65,10 @@ var hourglass = (function () {
                     lhaut.find("rect").css("fill", "#E40008");
                     lbas.find("rect").css("fill", "#E40008");
                     lflux.find("rect").css("fill", "#E40008");
-
+                    
+                    lbas.find("rect").attr("y", "465px");
+                    lbas.find("rect").attr("height", "0px");
+                    //console.log('avant lancement de runFluid(' + workTime + ')');
                     runFluid(workTime);
                 }
             });
@@ -92,6 +102,8 @@ var hourglass = (function () {
                     // with liquids elements setted at their 
                     // proper values, similarly to case above
                     lturn.css("display", "none");
+                    lhaut.css("display", "inline");
+                    lbas.css("display", "inline");
                     lhaut.find("rect").attr("y", "85px");
                     lhaut.find("rect").attr("height", "180px");
                     lhaut.find("rect").css("fill", "#547E35");
@@ -99,8 +111,6 @@ var hourglass = (function () {
                     lbas.find("rect").attr("height", "0px");
                     lbas.find("rect").css("fill", "#547E35");
                     lflux.find("rect").css("fill", "#547E35");
-                    lhaut.css("display", "inline");
-                    lbas.css("display", "inline");
 
                     runFluid(breakTime);
                 }
@@ -108,7 +118,6 @@ var hourglass = (function () {
             upside = true;
         }
         console.log("upside was:", upside);
-        // rotateGlass();
     }
 
 
@@ -116,7 +125,7 @@ var hourglass = (function () {
         // Fluid in the upper part is flowing down, 
         // filling the lower part.
        
-        if (flowTime > 30000) {
+        if (flowTime > 60000) {
             // Run a less granular animation (without velocity)
             // if the flowtime is long enough
        
@@ -148,6 +157,7 @@ var hourglass = (function () {
                     // remove time display
                     $('#remain').css("display", "none");
                     $('#runned').css("display", "none");
+                    rotateGlass();
                 }
             });
 
@@ -162,6 +172,7 @@ var hourglass = (function () {
            
         }
        
+        // ---
     }
 
     return {
@@ -181,13 +192,54 @@ function formatTime(milliseconds) {
 
 $(function () {
     $(".container").find("#start").click(function () {
-        // alert('clicked (de container)');
-        hourglass.setWorkTime(10000);
-        hourglass.setBreakTime(4000);
         hourglass.rotate();
     });
+
+
+    function iconTooltip (e) {
+        var timeSet = e.value;
+        return "<div><img src=\"img/work-64.gif\" /><br />" + 
+            timeSet + " min.</div>";
+    }
     
-    $("#sessionset").click(function () {
-        alert("hello, en bas");
+    function iconTooltip2 (e) {
+        var timeSet = e.value;
+        return "<div><img src=\"img/rest-64.gif\" /><br />" + 
+            timeSet + " min.</div>";
+    }
+
+    $("#sessionset").find("div").roundSlider({
+        radius: 70,
+        width: 13,
+        max: 60,
+        circleShape: "pie",
+        sliderType: "min-range",
+        showTooltip: true,
+        tooltipFormat: iconTooltip,
+        value: 20,
+        editableTooltip: false,
+        stop: function(e) {
+            hourglass.setWorkTime(e.value * 1000);
+            console.log(e.value);
+        },
+        startAngle: 315
     });
+    
+    $("#breakset").find("div").roundSlider({
+        radius: 70,
+        width: 13,
+        max: 30,
+        circleShape: "pie",
+        sliderType: "min-range",
+        showTooltip: true,
+        tooltipFormat: iconTooltip2,
+        value: 20,
+        editableTooltip: false,
+        stop: function(e) {
+            hourglass.setBreakTime(e.value * 1000);
+            console.log(e.value);
+        },
+        startAngle: 315
+    });
+    
 });
