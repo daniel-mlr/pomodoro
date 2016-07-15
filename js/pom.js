@@ -1,4 +1,5 @@
 var hourglass = (function () {
+    // git master branche
     var workTime = 6000;
     var breakTime = 4000;
     var timeMark = 0;
