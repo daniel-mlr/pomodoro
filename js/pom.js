@@ -23,10 +23,15 @@ var hourglass = (function () {
     function testTime(t1, t2) {
         console.log("temp1:" + t1 + ", temp2:" + t2);
     }
+
+    function stop() {
+        lhaut.find("rect").velocity("stop");
+        lbas.find("rect").velocity("stop");
+    }
     
     function rotateGlass() {
         // hourglass is upside (starting state)
-        console.log("je vois workTime, ", workTime, ", et breakTime, ", breakTime);
+        /*console.log("je vois workTime, ", workTime, ", et breakTime, ", breakTime);*/
         if (upside) {
 
             // during rotation, a dummy element (lturn)
@@ -130,6 +135,7 @@ var hourglass = (function () {
             // if the flowtime is long enough
        
         } else {
+            // Run a velocity animation for flowing liquid
             lhaut.find("rect").velocity({
                 y: 265, // from ...
                 height: 0 // from 180
@@ -137,8 +143,9 @@ var hourglass = (function () {
                 duration: flowTime, 
                 easing: [1, 0.79, 1, 0.79],
                 begin: function () {
-                    // show time spent and time left
+                    // show liquid rope
                     lflux.css("display", "inline");
+                    // show time spent and time left
                     $('#remain').css("display", "inline");
                     $('#runned').css("display", "inline");
                 },
@@ -171,14 +178,13 @@ var hourglass = (function () {
             });
            
         }
-       
-        // ---
     }
 
     return {
         setWorkTime: setWorkTime,
         setBreakTime: setBreakTime,
-        rotate: rotateGlass
+        rotate: rotateGlass,
+        stop: stop
     };
 
 }) ();
@@ -191,8 +197,18 @@ function formatTime(milliseconds) {
 }
 
 $(function () {
+    var running = false;
+    var minute = 1; 
+
     $(".container").find("#start").click(function () {
-        hourglass.rotate();
+        console.log('this.find("button").html()', $(this).find("button").html());
+        if ($(this).find("button").html() === "Stop") {
+            hourglass.stop();
+            $(this).find("button").html("Restart");
+        } else {
+            hourglass.rotate();
+            $(this).find("button").html("Stop");
+        }
     });
 
 
@@ -219,7 +235,7 @@ $(function () {
         value: 20,
         editableTooltip: false,
         stop: function(e) {
-            hourglass.setWorkTime(e.value * 1000);
+            hourglass.setWorkTime(e.value * 1000 * minute);
             console.log(e.value);
         },
         startAngle: 315
@@ -233,10 +249,10 @@ $(function () {
         sliderType: "min-range",
         showTooltip: true,
         tooltipFormat: iconTooltip2,
-        value: 20,
+        value: 10,
         editableTooltip: false,
         stop: function(e) {
-            hourglass.setBreakTime(e.value * 1000);
+            hourglass.setBreakTime(e.value * 1000 * minute);
             console.log(e.value);
         },
         startAngle: 315

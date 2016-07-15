@@ -93,8 +93,9 @@ svg {
 }
 */
 #start {
-    display: inline;
+    display: block;
     text-align: center;
+    width: 30px;
 }
 #hourglass {
     position: relative;
