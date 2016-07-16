@@ -10,7 +10,21 @@ var hourglass = (function () {
     var lflux = $("svg").find("#liquideFlux");
     var lturn = $("svg").find("#glass").find("#liquidTurn");
 
-    var rotateTime = 500;
+    var tomatoRed = "#E40008";
+    var tomatoGreen = "#547E35";
+
+    // glass/liquid geometry
+    var turnStartLine, turnEndLine, rotateAngle, liquidColor, runTime;
+    var glassTop = 65;
+    var glassBottom = 465;
+    var airGapFromTop = 20;    // should be computed from 
+    var airGapFromNeck = 60;   // glass size and liquid volume
+    var glassHeight = glassBottom - glassTop; // 200;
+    var glassNeck = (glassHeight / 2) + glassTop; // 265;
+    var liqHeightFromEdge = glassHeight / 2 - airGapFromNeck; // 140;
+    var liqHeightFromCentre = glassHeight / 2 - airGapFromTop; // 180;
+    
+    var rotateTime = 1500;
 
     function setWorkTime(time) {
         workTime = time;
@@ -32,34 +46,39 @@ var hourglass = (function () {
     
     function rotateGlass() {
         // hourglass is upside (starting state)
-        /*console.log("je vois workTime, ", workTime, ", et breakTime, ", breakTime);*/
         if (upside) {
-
-            // during rotation, a dummy element (lturn)
-            // is replacing the top, bottom and flux liquids.
-            // Those are reset to their original values
-            lturn.find("rect").attr("y", "325px");
-            lturn.find("rect").attr("height", "140px");
+            // during rotation, a dummy element (lturn) is replacing the top,
+            // bottom and flux liquids.  This dummy element start and end need
+            // to be referred from bottom to top
+            turnStartLine = glassBottom - liqHeightFromEdge; // 325
+            turnEndLine = turnStartLine - airGapFromNeck; // 265
+            
+            rotateAngle = "180deg";
+            liquidColor = tomatoRed;
+            runFluidTime = workTime;
+           
+            upside = false;
+            
+            /*
+            
+            lturn.find("rect").attr("y", turnStartLine);
+            lturn.find("rect").attr("height", liqHeightFromEdge);
             lturn.css("display", "inline");
             lhaut.css("display", "none");
-            lhaut.find("rect").attr("y", "85px");
-            lhaut.find("rect").attr("height", "180px");
             lbas.css("display","none");
-            lbas.find("rect").attr("y", "465px");
-            lbas.find("rect").attr("height", "0");
+              
+            $("#glass").velocity({ rotateZ: rotateAngle }, rotateTime);
             
-            // turning hourglass
-            $("#glass").velocity({ rotateZ: "180deg" }, rotateTime);
-            
+            lturn.find("rect")
             // liquid turns red while hourglass is turned upside
-            lturn.find("rect").velocity({ fill: "#E40008" });
-            
-            // move the liquid down to the bottleneck
-            lturn.find("rect").velocity({
-                y: "265px",
-                height: "180px",
+            .velocity({ fill: liquidColor }, rotateTime )
+            // move the liquid down the bottleneck
+            .velocity({
+                y: [turnEndLine, turnStartLine],
+                height: [liqHeightFromCentre, liqHeightFromEdge]
             }, {
-                delay: rotateTime / 2,
+                delay: rotateTime - 250,
+                queue: false, 
                 complete: function () {
                     // the dummy rotation element is replaced
                     // by the true liquid elements, which
@@ -68,62 +87,100 @@ var hourglass = (function () {
                     lturn.css("display", "none");
                     lhaut.css("display", "inline");
                     lbas.css("display", "inline");
-                    lhaut.find("rect").css("fill", "#E40008");
-                    lbas.find("rect").css("fill", "#E40008");
-                    lflux.find("rect").css("fill", "#E40008");
+                    lhaut.find("rect").css("fill", liquidColor);
+                    lbas.find("rect").css("fill", liquidColor);
+                    lflux.find("rect").css("fill", liquidColor);
                     
-                    lbas.find("rect").attr("y", "465px");
-                    lbas.find("rect").attr("height", "0px");
-                    //console.log('avant lancement de runFluid(' + workTime + ')');
-                    runFluid(workTime);
+                    runFluid(runFluidTime);
                 }
             });
-            upside = false;
-        
+            */
         } else {
-            // hourglass is turned upside-down.
-            // Liquids elements being prepared for 
-            // rotation, similarly to first-case above
-            lbas.css("display", "none");
-            lhaut.css("display", "none");
-            lturn.find("rect").attr("y", "65px");
-            lturn.find("rect").attr("height", "140px");
+            // hourglass is turned from upside-down to upright direction
+            // References for the dummy element change accordingly
+            turnStartLine = glassTop; // 65
+            turnEndLine = glassTop + airGapFromTop; // 85
+            
+            rotateAngle = "0deg";
+            liquidColor = tomatoGreen;
+            runFluidTime = breakTime;
+            
+            upside = true;
+            
+            /*
+           
+            lturn.find("rect").attr("y", turnStartLine);
+            lturn.find("rect").attr("height", liqHeightFromEdge);
             lturn.css("display", "inline");
+            lhaut.css("display", "none");
+            lbas.css("display", "none");
             
-            // turning hourglass
-            $("#glass").velocity({ rotateZ: "0deg" }, rotateTime);
+            $("#glass").velocity({ rotateZ: rotateAngle }, rotateTime);
             
-            // liquid turns green while hourglass is turned upside-down
-            lturn.find("rect").velocity({ fill: "#547E35" });
-            
+            lturn.find("rect")
+            // liquid change color while hourglass is turned upside-down
+            .velocity({ fill: liquidColor }, rotateTime)
             // move the liquid down to the bottleneck
-            lturn.find("rect").velocity({
-                y: "85px",
-                height: "180px"
-
+            .velocity({
+                y: [turnEndLine, turnStartLine],
+                height: [liqHeightFromCentre, liqHeightFromEdge]
             }, {
-                delay: (rotateTime / 2),
+                delay: rotateTime - 250,
+                queue: false, 
                 complete: function () {
                     // Replacing the dummy liquid rotation element 
                     // with liquids elements setted at their 
                     // proper values, similarly to case above
+                    
                     lturn.css("display", "none");
                     lhaut.css("display", "inline");
                     lbas.css("display", "inline");
-                    lhaut.find("rect").attr("y", "85px");
-                    lhaut.find("rect").attr("height", "180px");
-                    lhaut.find("rect").css("fill", "#547E35");
-                    lbas.find("rect").attr("y", "465px");
-                    lbas.find("rect").attr("height", "0px");
-                    lbas.find("rect").css("fill", "#547E35");
-                    lflux.find("rect").css("fill", "#547E35");
+                    lhaut.find("rect").css("fill", liquidColor);
+                    lbas.find("rect").css("fill", liquidColor);
+                    lflux.find("rect").css("fill", liquidColor);
 
-                    runFluid(breakTime);
+                    runFluid(runFluidTime);
                 }
             });
-            upside = true;
+            */
         }
         console.log("upside was:", upside);
+
+        // rotate 
+            
+        // setting the dummy rectangle instead of the bottom and top one
+        lturn.find("rect").attr("y", turnStartLine);
+        lturn.find("rect").attr("height", liqHeightFromEdge);
+        lturn.css("display", "inline");
+        lhaut.css("display", "none");
+        lbas.css("display", "none");
+
+        $("#glass").velocity({ rotateZ: rotateAngle }, rotateTime);
+
+        lturn.find("rect")
+        // liquid change color while hourglass is turned upside-down
+        .velocity({ fill: liquidColor }, rotateTime)
+        // move the liquid down to the bottleneck
+        .velocity({
+            y: [turnEndLine, turnStartLine],
+            height: [liqHeightFromCentre, liqHeightFromEdge]
+        }, {
+            delay: rotateTime - 250,
+            queue: false, 
+            complete: function () {
+                // Replacing the dummy liquid rotation element with liquids
+                // elements setted at their proper values, similarly to case
+                // above
+                lturn.css("display", "none");
+                lhaut.css("display", "inline");
+                lbas.css("display", "inline");
+                lhaut.find("rect").css("fill", liquidColor);
+                lbas.find("rect").css("fill", liquidColor);
+                lflux.find("rect").css("fill", liquidColor);
+
+                runFluid(runFluidTime);
+            }
+        });
     }
 
 
@@ -138,8 +195,8 @@ var hourglass = (function () {
         } else {
             // Run a velocity animation for flowing liquid
             lhaut.find("rect").velocity({
-                y: 265, // from ...
-                height: 0 // from 180
+                y: [265, 85], // from 85 to 265
+                height: [0, 180] // from 180 to 0
             }, {
                 duration: flowTime, 
                 easing: [1, 0.79, 1, 0.79],
@@ -151,7 +208,7 @@ var hourglass = (function () {
                     $('#runned').css("display", "inline");
                 },
                 progress: function (elements, complete, remaining) {
-                    // animate time spent and time left
+                    // update time spent and time left
                     if (Math.floor(remaining / 1000) !== timeMark) {
                         // only call function every second
                         $('#remain').html(formatTime(remaining));
@@ -171,8 +228,8 @@ var hourglass = (function () {
 
             // fluid accumulates in glass' lower part
             lbas.find("rect").velocity({
-                y: 325,      // from ...
-                height: 140  // from 0
+                y: [325, 465],    // from 465 to 325
+                height: [140, 0]  // from 0 to 140
             }, {
                 duration: flowTime,
                 easing: [0.76, 0.54, 0.89, 0.69]
