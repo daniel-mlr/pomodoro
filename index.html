@@ -5,100 +5,91 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pomodoro</title>
+
     <link rel="stylesheet" 
     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
     crossorigin="anonymous">
     <link rel="stylesheet" 
         href="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.css">
+    <!--link rel="stylesheet" href="css/testbs1.css"-->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-4">
-                <h1>FreeCodeCamp Pomodoro Project</h1>
-                <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris porta sem eu
-    magna vehicula porttitor. Etiam scelerisque accumsan ipsum id suscipit. Lorem
-    ipsum dolor sit amet, consectetur adipiscing elit. Nunc efficitur feugiat arcu,
-    at facilisis felis pulvinar sed. Donec sed mauris dapibus diam hendrerit
-    elementum. Quisque fringilla diam vel eros facilisis, a commodo dui egestas.
-    Integer condimentum malesuada tortor, et auctor dui congue nec. Morbi ac urna
-    porta, tincidunt ante at, mollis nisi. Vestibulum pellentesque lorem sit amet
-    turpis gravida vehicula. Aenean mauris lectus, convallis id turpis eu,
-    porttitor volutpat ante. Quisque cursus vitae metus vitae pretium. Morbi urna
-    purus, tristique non libero accumsan, pellentesque placerat odio.
-                </p>
-                <p>
-    Vivamus pharetra, turpis ac placerat dapibus, erat magna pellentesque leo,
-    vitae pharetra magna justo non elit. Curabitur in lobortis ex, sit amet blandit
-    est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-    ac turpis egestas. Praesent tristique, eros at tempus fringilla, metus massa
-    lobortis tellus, sed ornare justo nisl at eros. Nullam faucibus quam vel tortor
-    mollis eleifend. Sed vel malesuada urna. Fusce elit lectus, ultricies in tellus
-    quis, hendrerit ultricies urna. Sed mollis arcu nec vulputate posuere. Ut quam
-    diam, rhoncus non tempus eget, consectetur a nibh. Aliquam sed turpis libero.
-    Fusce malesuada nec ligula ut sagittis. Nullam ornare ut dolor at finibus.
-    Praesent iaculis elit lobortis tellus accumsan iaculis. Nam et posuere turpis.
-                </p>
-            </div><!-- end col-->
-            <div cass="col-md-8">
-                <div id="controls">
-                    <div id="sessionset">
-                        <div id="slider1"></div>
-                    </div>
-                    <div id="start">
-                        <button >Start</button>
-                    </div>
-                    <div id="breakset">
-                        <div id="slider2"></div>
-                    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 left">
+            <h1>FreeCodeCamp Pomodoro Project</h1>
+            <p>
+                Daniel Meilleur dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+            </p>
+        </div>
+        <div class="col-md-8">
+            <div id="controls">
+                <div id="sessionset">
+                    <div id="slider1"></div>
                 </div>
-                <div id="pom">
-                    <div id="wholeHG">
-                        <div class="showtime" id="remain">16:30</div>
-                        <div class="showtime" id="runned">13:20</div>
-
-                        <svg id="hourglass" xmlns="http://www.w3.org/2000/svg"
-                           preserveAspectRatio="xMinYMin meet" >
-                            <g id="liquideHaut">
-                                <rect x="100" y="85" width="300" height="180" />
-                            </g>
-                            <g id="liquideBas">
-                                <rect x="100" y="325" width="300" height="140" />
-                            </g>
-                            <g id="liquideFlux">
-                                <rect x="247" y="265" width="6" height="200" />
-                            </g>
-                            <g id="glass">
-                                <rect class="hgframe" x="50" y="25" rx="15" ry="15" width="400" height="40" />
-                                <rect class="hgcol" x="80" y="65" width="20" height="400" />
-                                <g id="liquidTurn">
-                                    <rect x="100" y="325" width="300" height="140" />
-                                </g>
-                                <path d="M100 65 
-                                    c 0  170,  147  145,  147 200 
-                                    c 0   55, -147   30, -147 200 z
-                                    M 400 465
-                                    c 0 -170, -147 -145, -147 -200
-                                    c 0  -55,  147  -30,  147 -200 z " 
-                                    fill="white" 
-                                    fill-opacity="1"
-                                    stroke="blue"/>
-                                <rect class="hgcol" x="400" y="65" width="20" height="400" />
-                                <rect class="hgframe" x="50" y="465" rx="15" ry="15" width="400" height="40" />
-                            </g>
-                        </svg>
-                    </div>
+                <!-- 
+                <div id="start">
+                    <button >Start</button>
+                </div>
+                -->
+                <div id="breakset">
+                    <div id="slider2"></div>
                 </div>
             </div>
-        </div> <!-- end row-->
+            <div id="pom">
+                <div id="wholeHG">
+
+                    <svg class="img-responsive" id="hourglass" xmlns="http://www.w3.org/2000/svg"
+                        preserveAspectRatio="xMinYMin meet"
+                       viewBox="0 -20 500 530" > 
+                       <g id="liquideHaut">
+                            <rect x="100" y="85" width="300" height="180" />
+                        </g>
+                        <g id="liquideBas">
+                            <rect x="100" y="325" width="300" height="140" />
+                        </g>
+                        <g id="liquideFlux">
+                            <rect x="247" y="265" width="6" height="200" />
+                        </g>
+                        <g id="glass">
+                            <rect class="hgframe" x="50" y="25" rx="15" ry="15" width="400" height="40" />
+                            <rect class="hgcol" x="80" y="65" width="20" height="400" />
+                            <g id="liquidTurn">
+                                <rect x="100" y="325" width="300" height="140" />
+                            </g>
+                            <path d="M100 65 
+                                c 0  170,  147  145,  147 200 
+                                c 0   55, -147   30, -147 200 z
+                                M 400 465
+                                c 0 -170, -147 -145, -147 -200
+                                c 0  -55,  147  -30,  147 -200 z " 
+                                fill="white" 
+                                fill-opacity="1"
+                                stroke="blue"/>
+                            <rect class="hgcol" x="400" y="65" width="20" height="400" />
+                            <rect class="hgframe" x="50" y="465" rx="15" ry="15" width="400" height="40" />
+                        </g>
+                       <text class="showtime" id="remain" x="160" y="180"></text>
+                       <text class="showtime" id="runned" x="160" y="425"></text>
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/jquery-2.0.0.min.js">\x3C/script>')</script>
 <script src="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.js"></script>
 <script src="http://cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+<script src="http://cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
 <script src="js/pom.js"></script>
+
 </body>
 </html>
