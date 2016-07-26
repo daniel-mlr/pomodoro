@@ -1,5 +1,5 @@
 var hourglass = (function () {
-    // nouvelle branche pour explorer forcefeed
+    // 
     var workTime = 7000;
     var breakTime = 7000;
     var timeMark = 0;
@@ -24,6 +24,8 @@ var hourglass = (function () {
     var liqHeightFromEdge = glassHeight / 2 - airGapFromNeck; // 140;
     var liqHeightFromCentre = glassHeight / 2 - airGapFromTop; // 180;
     
+    var running = false;
+
     var rotateTime = 1000;
     
     function setWorkTime(time) {
@@ -110,7 +112,7 @@ var hourglass = (function () {
         // Fluid in the upper part is flowing down, filling the lower part.
        
         
-        if (flowTime > 6000) {
+        if (flowTime > 60000) {
             // Run a less cpu-intensive animation (i.e.: without velocity) if
             // the flowtime is long enough
             var compteur = flowTime;
@@ -209,10 +211,16 @@ var hourglass = (function () {
 
 }) ();
 
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
 function formatTime(milliseconds) {
     var min = Math.floor(milliseconds / 60000);
     var sec = (milliseconds - (min * 60000)) / 100000;
     var time = (min + sec).toFixed(2);
+    time = pad(time, 5);
     return time.replace('.', ':');
 }
 
@@ -225,7 +233,8 @@ $(function () {
         {multiplier: 60, abbrev: "min."}
     ]; 
 
-    $(".container").find("#start").click(function () {
+    /*
+    $("#start").click(function () {
         if ($(this).find("button").html() === "Stop") {
             hourglass.stop();
             $(this).find("button").html("Restart");
@@ -234,7 +243,11 @@ $(function () {
             $(this).find("button").html("Stop");
         }
     });
-
+    */
+    $("svg").click(function() {
+        hourglass.rotate();
+    });
+    
     function makeIconToolTip(id, timeUnit) {
         return function(e) {
             return "<div><img src=\"img/" + id + "-64.gif\" /><br />" + 

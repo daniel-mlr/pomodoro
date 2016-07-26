@@ -1,0 +1,48 @@
+#inner {
+  margin-left: 50px;
+  border: 1px solid red;
+}
+#handle1 .rs-handle  {
+    background-color: transparent;
+    border: 8px solid transparent;
+    border-right-color: black;
+    margin: -6px 0px 0px 14px !important;
+    border-width: 6px 104px 6px 4px;
+}
+#handle1 .rs-handle:before  {
+    display: block;
+    content: " ";
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    background: black;
+    right: -11px;
+    bottom: -11px;
+    border-radius: 100px;
+}
+#handle1 .rs-tooltip  {
+    top: 75%;
+    font-size: 11px;
+}
+#handle1 .rs-tooltip div  {
+    text-align: center;
+    background: orange;
+    color: white;
+    border-radius: 4px;
+    padding: 1px 2px 2px;
+    margin-top: 9px;
+    height: 100px;
+}
+#handle1 .rs-range-color  {
+    background-color: #DB5959;
+}
+#handle1 .rs-path-color  {
+    background-color: #F0C5C5;
+}
+#svgcont {
+    background-color: lightgray;
+}
+svg {
+    width: 500px;
+    height: 700px;
+}
