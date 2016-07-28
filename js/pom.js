@@ -1,7 +1,7 @@
 var hourglass = (function () {
     // 
-    var workTime = 7000;
-    var breakTime = 7000;
+    var workTime = 7000; // default work time
+    var breakTime = 6000; //default break time
     var timeMark = 0;
     var upside = true;
 
@@ -10,6 +10,7 @@ var hourglass = (function () {
     var lflux = $("svg").find("#liquideFlux");
     var lturn = $("svg").find("#glass").find("#liquidTurn");
 
+    // liquid colors
     var tomatoRed = "#E40008";
     var tomatoGreen = "#547E35";
 
@@ -24,7 +25,7 @@ var hourglass = (function () {
     var liqHeightFromEdge = glassHeight / 2 - airGapFromNeck; // 140;
     var liqHeightFromCentre = glassHeight / 2 - airGapFromTop; // 180;
     
-    var running = false;
+    var running = false; // hourglass animation running state  
 
     var rotateTime = 1000;
     
@@ -35,10 +36,16 @@ var hourglass = (function () {
         breakTime = time;
     }
     
+    
     function stop() {
         // a completer
-        lhaut.find("rect").velocity("stop");
-        lbas.find("rect").velocity("stop");
+        lhaut.find("rect").velocity("stop", true);
+        lbas.find("rect").velocity("stop", true);
+    }
+
+    /* à compléter */
+    function reset() {
+        setWorkTime();
     }
     
     function rotateGlass() {
@@ -110,7 +117,6 @@ var hourglass = (function () {
 
     function runFluid (flowTime) {
         // Fluid in the upper part is flowing down, filling the lower part.
-       
         
         if (flowTime > 60000) {
             // Run a less cpu-intensive animation (i.e.: without velocity) if
@@ -175,7 +181,7 @@ var hourglass = (function () {
                 progress: function (elements, complete, remaining) {
                     // update time spent and time left
                     if (Math.floor(remaining / 1000) !== timeMark) {
-                        // only call function every second
+                        // only call function once every second
                         $('#remain').html(formatTime(remaining));
                         $('#runned').html(formatTime(flowTime - remaining));
                         timeMark = Math.floor(remaining / 1000);
@@ -206,11 +212,13 @@ var hourglass = (function () {
         setWorkTime: setWorkTime,
         setBreakTime: setBreakTime,
         rotate: rotateGlass,
-        stop: stop
+        stop: stop,
+        running: running
     };
 
 }) ();
 
+/* functions for formatting time display */
 function pad(num, size) {
     var s = num+"";
     while (s.length < size) s = "0" + s;
@@ -225,37 +233,114 @@ function formatTime(milliseconds) {
 }
 
 $(function () {
-    var running = false;
+    /* page loaded */
     
-    var scale = 1;
-    var timeScale = [
-        {multiplier: 1, abbrev: "sec."},
-        {multiplier: 60, abbrev: "min."}
-    ]; 
-
-    /*
-    $("#start").click(function () {
-        if ($(this).find("button").html() === "Stop") {
+    hourglass.running = false;
+    
+    /* starting and stopping the pomodoro cycles */
+    $("svg").click(function() {
+        if (hourglass.running) {
+            hourglass.running = false;
             hourglass.stop();
-            $(this).find("button").html("Restart");
+            // console.log('je devrais être faux: ', hourglass.running);
         } else {
+            hourglass.running = true;
             hourglass.rotate();
-            $(this).find("button").html("Stop");
+            // console.log('je devrais être vrai: ', hourglass.running);
         }
     });
-    */
-    $("svg").click(function() {
-        hourglass.rotate();
-    });
     
-    function makeIconToolTip(id, timeUnit) {
+    /* function factories for sliders settings */
+    function makeIconToolTip(id, unitLabel) {
         return function(e) {
             return "<div><img src=\"img/" + id + "-64.gif\" /><br />" + 
-                e.value + " " + timeUnit + "</div>";
+                e.value + " " + unitLabel + "</div>";
         };
     }
+    
+    function setTime(id, timeUnit) {
+        if (id === "work") {
+            return function(e) {
+                console.log('dans setTime, e=', e.value);
+                console.log('dans setTime, timeUnit= :', timeUnit);
+                return hourglass.setWorkTime(e.value * 1000 * timeUnit);
+            };
+        } else if (id === "rest") {
+            return function(e) {
+                return hourglass.setBreakTime(e.value * 1000 * timeUnit);
+            };
+        }
+    }
 
-    $("#sessionset").find("div").roundSlider({
+    // sliders common settings
+    var sliderSettings = {
+        radius: 70,
+        width: 13,
+        circleShape: "pie",
+        sliderType: "min-range",
+        showTooltip: true,
+        editableTooltip: false,
+        startAngle: 315
+    };
+  
+    // should be "const", but only available in new js version
+    var T_SCALE = [
+        {multiplier: 1, label: "sec."},
+        {multiplier: 60, label: "min."}
+    ]; 
+    
+    function setSliders(unit) {
+        
+        // set work time selector slider
+        sliderSettings.max = 60;
+        sliderSettings.tooltipFormat = makeIconToolTip("work", T_SCALE[unit].label);
+        sliderSettings.value = 20;
+        sliderSettings.stop = setTime("work", T_SCALE[unit].multiplier);
+        console.log("sliderSettings:", sliderSettings);
+        $("#sessionset").find("div").roundSlider(sliderSettings);
+        
+        // set break time selector slider
+        sliderSettings.max = 30;
+        sliderSettings.tooltipFormat = makeIconToolTip("rest", T_SCALE[unit].label);
+        sliderSettings.value = 5;
+        sliderSettings.stop = setTime("rest", T_SCALE[unit].multiplier);
+        $("#breakset").find("div").roundSlider(sliderSettings);
+    }
+
+    function deleteSliders() {
+        $("#sessionset").find("div").roundSlider("destroy");
+        $("#breakset").find("div").roundSlider("destroy");
+    }
+   
+    setSliders(0);
+
+
+    // refactor?
+    $("#checkTimeScale input:checkbox").change(function() {
+        var unit = this.checked ? 0 : 1;
+        console.log('unit:', unit);
+        deleteSliders();
+        setSliders(unit);
+        console.log('work time:', 20 * T_SCALE[unit].multiplier * 1000);
+        // hourglass.setWorkTime(20 * T_SCALE[unit].multiplier * 1000);
+        // hourglass.setBreakTime(5 * T_SCALE[unit].multiplier * 1000);
+        console.log('valeur:', $("#sessionset").find("div").roundSlider("option", "value"));
+    });
+    
+
+
+
+
+    /*
+    scale = 0;
+    $("#sessionset").find("div").roundSlider("option", { 
+        "value": 5,
+        "tooltipFormat": makeIconToolTip("work", timeScale[scale].abbrev)
+    });
+    */
+    
+    /*
+    var sessionSettings = {
         radius: 70,
         width: 13,
         max: 60,
@@ -265,25 +350,37 @@ $(function () {
         tooltipFormat: makeIconToolTip("work", timeScale[scale].abbrev),
         value: 20,
         editableTooltip: false,
-        stop: function(e) {
-            hourglass.setWorkTime(e.value * 1000 * timeScale[scale].multiplier);
-        },
+        // stop: function(e) {
+        //     hourglass.setWorkTime(e.value * 1000 * timeScale[scale].multiplier);
+        // },
+     *  stop: updateSessionTime,
         startAngle: 315
-    });
-    
-    $("#breakset").find("div").roundSlider({
+    };
+
+    var breakSettings = {
         radius: 70,
         width: 13,
-        max: 30,
+     *  max: 30,
         circleShape: "pie",
         sliderType: "min-range",
         showTooltip: true,
-        tooltipFormat: makeIconToolTip("rest", timeScale[scale].abbrev),
-        value: 10,
+     *  tooltipFormat: makeIconToolTip("rest", timeScale[scale].abbrev),
+     *  value: 10,
         editableTooltip: false,
         stop: function(e) {
             hourglass.setBreakTime(e.value * 1000 * timeScale[scale].multiplier);
         },
         startAngle: 315
-    });
+    };
+    */
+    
+    /*
+    $("#sessionset").find("div").roundSlider(sessionSettings);
+    $("#breakset").find("div").roundSlider(breakSettings);
+    */
+    
+    // example:
+    // $("#sessionset").find("div").roundSlider("option", { "value": 5 });
+    
+
 });

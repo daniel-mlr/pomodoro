@@ -4,36 +4,27 @@ body {
   font-weight: 200;
   letter-spacing: 1px;
   margin: 25px auto 0 auto;
-  /*
-  background: rgb(234, 235, 235);
-  color: rgb(25, 25, 25);
-  */
 }
 
-div {
-  /*
-  width: 30%;
-  margin-right: 3%;
-  float: left;
-  */
-}
 .left {
   background: rgb(234, 235, 235);
   color: rgb(25, 25, 25);
 }
 #controls {
-    margin-left: 80px;
+    /*
+    width: 100%;
+    display: block;
+    margin: auto;
+    */
+    margin-left: 23%;
 }
 #controls > div {
     display: inline-block;
-    width: 180px;
+    width: 45%;
     /*
+    width: 180px;
     margin: auto;
     */
-}
-#start {
-    text-align: center;
-    width: 30px;
 }
 #wholeHG {
     /* 
@@ -47,6 +38,13 @@ svg {
     height: 530px;
     display: block;
     margin: auto;
+}
+
+#checkTimeScale {
+    background-color: white;
+    border: 1px solid black;
+    padding-left: 10px;
+    margin-bottom: 10px;
 }
 
 /* ******************************* */
@@ -107,6 +105,13 @@ svg {
 }
 #liquidTurn rect {
     fill: red;
+}
+
+/* **** houglass frame ****/
+.hgcol {
+    fill: grey;
+    fill: #082764;
+    fill: #041B48;
 }
 
 /* ************************

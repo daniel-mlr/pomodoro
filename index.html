@@ -22,7 +22,14 @@
             <h1>FreeCodeCamp Pomodoro Project</h1>
             <p>
                 Daniel Meilleur dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+                The sliders dials are scaled in seconds for the purpose of
+                testing de motions of the hourglass. Unthick the box below for
+                selecting time in minutes.
+                Blabla bla...
             </p>
+            <div id="checkTimeScale">
+                <input type="checkbox" name="seconds" checked="checked"> Time dialers scaled in seconds.<br />
+            </div>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
             </p>
@@ -35,11 +42,6 @@
                 <div id="sessionset">
                     <div id="slider1"></div>
                 </div>
-                <!-- 
-                <div id="start">
-                    <button >Start</button>
-                </div>
-                -->
                 <div id="breakset">
                     <div id="slider2"></div>
                 </div>
@@ -50,6 +52,14 @@
                     <svg class="img-responsive" id="hourglass" xmlns="http://www.w3.org/2000/svg"
                         preserveAspectRatio="xMinYMin meet"
                        viewBox="0 -20 500 530" > 
+                       <defs>
+                           <pattern id="woodHoriz" patternUnits="objectBoundingBox" width="40" height="4">
+                               <image xlink:href="img/wood1-400x40.jpg" x="0" y="0" width="400" height="40" />
+                           </pattern>
+                           <pattern id="woodHoriz2" patternUnits="objectBoundingBox" width="40" height="4">
+                               <image xlink:href="img/wood2-400x40.jpg" x="0" y="0" width="400" height="40" />
+                           </pattern>
+                           </defs>
                        <g id="liquideHaut">
                             <rect x="100" y="85" width="300" height="180" />
                         </g>
@@ -60,7 +70,8 @@
                             <rect x="247" y="265" width="6" height="200" />
                         </g>
                         <g id="glass">
-                            <rect class="hgframe" x="50" y="25" rx="15" ry="15" width="400" height="40" />
+                            <rect class="hgframe" x="50" y="25" rx="15" ry="15" 
+                                width="400" height="40" fill="url(#woodHoriz)" />
                             <rect class="hgcol" x="80" y="65" width="20" height="400" />
                             <g id="liquidTurn">
                                 <rect x="100" y="325" width="300" height="140" />
@@ -74,8 +85,10 @@
                                 fill="white" 
                                 fill-opacity="1"
                                 stroke="blue"/>
-                            <rect class="hgcol" x="400" y="65" width="20" height="400" />
-                            <rect class="hgframe" x="50" y="465" rx="15" ry="15" width="400" height="40" />
+                            <rect class="hgcol" x="400" y="65" width="20" height="400"/>
+                            <!--rect class="hgframe" x="50" y="465" rx="15" ry="15" width="400" height="40" /-->
+                            <rect class="hgframe" x="50" y="465" rx="15" ry="15" 
+                                width="400" height="40" fill="url(#woodHoriz2)" />
                         </g>
                        <text class="showtime" id="remain" x="160" y="180"></text>
                        <text class="showtime" id="runned" x="160" y="425"></text>
