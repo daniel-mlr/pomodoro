@@ -57,29 +57,14 @@ svg {
     font-style: italic;
     opacity: 0.1;
     text-align: center;
-    /*
-    position: absolute;
-    left: 36%;
-    z-index: 2;
-     */
 }
 
 #glass {
     transform-origin: 50% 50%;
 }
 #remain {
-    /*
-    top: 36%;
-    display: none;
-    display: inline;
-    */
 }
 #runned {
-    /*
-    top: 72%;
-    display: none;
-    display: inline;
-    */
 }
 #liquideHaut {
     display: none;

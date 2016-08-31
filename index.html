@@ -21,20 +21,56 @@
         <div class="col-md-4 left">
             <h1>FreeCodeCamp Pomodoro Project</h1>
             <p>
-                Daniel Meilleur dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
-                The sliders dials are scaled in seconds for the purpose of
-                testing de motions of the hourglass. Unthick the box below for
-                selecting time in minutes.
-                Blabla bla...
+                This is my entry to the 
+                <a href="https://www.freecodecamp.com/challenges/build-a-pomodoro-clock">
+                    second challenge</a> of a serie of advanced front end
+                development projects toward the obtention of the 
+                <a href="https://www.freecodecamp.com/about">
+                    Front End Development Certificate</a> at 
+                <a href="https://www.freecodecamp.com">FreeCodeCamp</a>.
+            </p>
+            <p>
+                We are asked to build a  
+                <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
+                    >pomodoro timer</a> 
+                which can be reset and customized by the user. As we are
+                encouraged to build our own original design, I thought of a
+                simple animated hourglass in SVG in which flow is simulated by
+                resizing rectangles.  It turned to be a hugely bigger endeavor
+                than what I expected at first, and sunk an insane amount of
+                time in it.
+            </p>
+            <p>
+                So here it is, and to allow you to see the unfolding of the
+                full work-rest cycle, I added the option to set the time in
+                seconds. Unthick the box below to have it set in minutes.
             </p>
             <div id="checkTimeScale">
                 <input type="checkbox" name="seconds" checked="checked"> Time dialers scaled in seconds.<br />
             </div>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+                The animation is built on the 
+                <a href="http://velocityjs.org/">velocity library</a>, and the 
+                time setting sliders on the 
+                <a href="http://roundsliderui.com">roundsliderui library</a>. Click
+                on the hourglass to start, and click again to reset. 
             </p>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+                The animation is powered by 
+                <a href="http://velocityjs.org/">velocity</a> only when the
+                time is set to one minute or less. Otherwise, because velocity 
+                consume a lot of CPU resources with its continuous updating 
+                of element attributes, I wrote an attribute updating routine which
+                is triggered only once per second. That results in some 
+                resize jerks which become imperceptible when the time is
+                sufficiently large and use little CPU resources.
+            </p>
+            <p>
+                This is not a quite finished job. I hit a stumbling block when
+                trying to stop the animation chain for reset, and had to resort
+                to an expedient consisting of reloading the whole page.
+                Certainly, the code needs refactoring.  Any advice on this is
+                very appreciated.
             </p>
         </div>
         <div class="col-md-8">

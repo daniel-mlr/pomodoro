@@ -28,6 +28,7 @@ var hourglass = (function () {
     var running = false; // hourglass animation running state  
 
     var rotateTime = 1000;
+    var rotating = false;
     
     function setWorkTime(time) {
         workTime = time;
@@ -36,27 +37,45 @@ var hourglass = (function () {
         breakTime = time;
     }
     
+    // function setTime(workt, breakt) {
+    //     workTime = work;
+    //     breakTime = breakt;
+    // }
     
     function stop() {
         // a completer
         lhaut.find("rect").velocity("stop", true);
         lbas.find("rect").velocity("stop", true);
+        $("#glass").velocity("stop", true);
+        
+        //rotateAngle = "0deg";
+        //console.log('glass:', $("#glass").is(':velocity-animating'));
+
+        lflux.css("display", "none");
+        //lhaut.css("display", "none");
+        //lbas.css("display", "inline");
     }
 
     /* à compléter */
-    function reset() {
-        setWorkTime();
+    function reset(time) {
+        setWorkTime(time[0]);
+        setBreakTime(time[1]);
+        lbas.find("rect").attr("height", liqHeightFromEdge);
+        lbas.find("rect").attr("y", glassBottom - liqHeightFromEdge);
+        upside = true;
     }
     
     function rotateGlass() {
         // hourglass is upside (starting state)
         if (upside) {
+            console.log('starting rotateGlass from upside=Vrai');
             // during rotation, a dummy element (lturn) is replacing the top,
             // bottom and flux liquids.  This dummy element start and end need
             // to be referred from bottom to top
             turnStartLine = glassBottom - liqHeightFromEdge; // 325
             turnEndLine = turnStartLine - airGapFromNeck; // 265
-            
+            console.log('turnStartLine', turnStartLine, 'turnEndLine', turnEndLine);
+
             rotateAngle = "180deg";
             liquidColor = tomatoRed;
             runFluidTime = workTime;
@@ -64,6 +83,7 @@ var hourglass = (function () {
             upside = false;
             
         } else {
+            console.log('starting rotateGlass from upside=Faux');
             // hourglass is turned from upside-down to upright direction
             // References for the dummy element change accordingly
             turnStartLine = glassTop; // 65
@@ -87,6 +107,7 @@ var hourglass = (function () {
         lbas.css("display", "none");
 
         // rotate the whole hourglass
+        console.log('rotating=',rotating);
         $("#glass").velocity({ rotateZ: rotateAngle }, rotateTime);
 
         lturn.find("rect")
@@ -212,11 +233,14 @@ var hourglass = (function () {
         setWorkTime: setWorkTime,
         setBreakTime: setBreakTime,
         rotate: rotateGlass,
+        rotating: rotating,
         stop: stop,
+        reset: reset,
         running: running
     };
 
 }) ();
+
 
 /* functions for formatting time display */
 function pad(num, size) {
@@ -236,42 +260,8 @@ $(function () {
     /* page loaded */
     
     hourglass.running = false;
+    var unit = 0;
     
-    /* starting and stopping the pomodoro cycles */
-    $("svg").click(function() {
-        if (hourglass.running) {
-            hourglass.running = false;
-            hourglass.stop();
-            // console.log('je devrais être faux: ', hourglass.running);
-        } else {
-            hourglass.running = true;
-            hourglass.rotate();
-            // console.log('je devrais être vrai: ', hourglass.running);
-        }
-    });
-    
-    /* function factories for sliders settings */
-    function makeIconToolTip(id, unitLabel) {
-        return function(e) {
-            return "<div><img src=\"img/" + id + "-64.gif\" /><br />" + 
-                e.value + " " + unitLabel + "</div>";
-        };
-    }
-    
-    function setTime(id, timeUnit) {
-        if (id === "work") {
-            return function(e) {
-                console.log('dans setTime, e=', e.value);
-                console.log('dans setTime, timeUnit= :', timeUnit);
-                return hourglass.setWorkTime(e.value * 1000 * timeUnit);
-            };
-        } else if (id === "rest") {
-            return function(e) {
-                return hourglass.setBreakTime(e.value * 1000 * timeUnit);
-            };
-        }
-    }
-
     // sliders common settings
     var sliderSettings = {
         radius: 70,
@@ -289,13 +279,57 @@ $(function () {
         {multiplier: 60, label: "min."}
     ]; 
     
+    /* starting and stopping the pomodoro cycles */
+    $("svg").click(function() {
+        if (hourglass.running) {
+            console.log('hourglass.rotating:', hourglass.rotating);
+            hourglass.running = false;
+            hourglass.stop();
+            console.log('je devrais être faux: ', hourglass.running);
+            location.reload();
+        } else {
+            var workTime = $("#sessionset").find("div").roundSlider("option", "value");
+            var breakTime = $("#breakset").find("div").roundSlider("option", "value");
+            console.log('workTime:', workTime, 'breakTime:', breakTime);
+            workTime *= (1000 * T_SCALE[unit].multiplier);
+            breakTime *= (1000 * T_SCALE[unit].multiplier);
+            hourglass.reset([workTime, breakTime]);
+            $("#glass").css("transform", "");
+            console.log('glass:', $("#glass"));
+            
+            hourglass.running = true;
+            hourglass.rotate();
+        }
+    });
+    
+    /* function factories for sliders settings */
+    function makeIconToolTip(id, unitLabel) {
+        return function(e) {
+            return "<div><img src=\"img/" + id + "-64.gif\" /><br />" + 
+                e.value + " " + unitLabel + "</div>";
+        };
+    }
+    
+    function makeTimeSetter(id, timeUnit) {
+        if (id === "work") {
+            return function(e) {
+                return hourglass.setWorkTime(e.value * 1000 * timeUnit);
+            };
+        } else if (id === "rest") {
+            return function(e) {
+                return hourglass.setBreakTime(e.value * 1000 * timeUnit);
+            };
+        }
+    }
+
+    
     function setSliders(unit) {
         
         // set work time selector slider
         sliderSettings.max = 60;
         sliderSettings.tooltipFormat = makeIconToolTip("work", T_SCALE[unit].label);
         sliderSettings.value = 20;
-        sliderSettings.stop = setTime("work", T_SCALE[unit].multiplier);
+        sliderSettings.stop = makeTimeSetter("work", T_SCALE[unit].multiplier);
         console.log("sliderSettings:", sliderSettings);
         $("#sessionset").find("div").roundSlider(sliderSettings);
         
@@ -303,7 +337,7 @@ $(function () {
         sliderSettings.max = 30;
         sliderSettings.tooltipFormat = makeIconToolTip("rest", T_SCALE[unit].label);
         sliderSettings.value = 5;
-        sliderSettings.stop = setTime("rest", T_SCALE[unit].multiplier);
+        sliderSettings.stop = makeTimeSetter("rest", T_SCALE[unit].multiplier);
         $("#breakset").find("div").roundSlider(sliderSettings);
     }
 
@@ -314,73 +348,17 @@ $(function () {
    
     setSliders(0);
 
-
     // refactor?
     $("#checkTimeScale input:checkbox").change(function() {
-        var unit = this.checked ? 0 : 1;
-        console.log('unit:', unit);
+        unit = this.checked ? 0 : 1;
+        var oldWorkTime = $("#sessionset").find("div").roundSlider("option", "value");
+        var oldBreakTime = $("#breakset").find("div").roundSlider("option", "value");
         deleteSliders();
+        hourglass.setWorkTime(oldWorkTime * 1000 * T_SCALE[unit].multiplier);
+        hourglass.setBreakTime(oldBreakTime * 1000 * T_SCALE[unit].multiplier);
         setSliders(unit);
-        console.log('work time:', 20 * T_SCALE[unit].multiplier * 1000);
-        // hourglass.setWorkTime(20 * T_SCALE[unit].multiplier * 1000);
-        // hourglass.setBreakTime(5 * T_SCALE[unit].multiplier * 1000);
-        console.log('valeur:', $("#sessionset").find("div").roundSlider("option", "value"));
+        $("#sessionset").find("div").roundSlider("option", {"value": oldWorkTime});
+        $("#breakset").find("div").roundSlider("option", {"value": oldBreakTime});
+
     });
-    
-
-
-
-
-    /*
-    scale = 0;
-    $("#sessionset").find("div").roundSlider("option", { 
-        "value": 5,
-        "tooltipFormat": makeIconToolTip("work", timeScale[scale].abbrev)
-    });
-    */
-    
-    /*
-    var sessionSettings = {
-        radius: 70,
-        width: 13,
-        max: 60,
-        circleShape: "pie",
-        sliderType: "min-range",
-        showTooltip: true,
-        tooltipFormat: makeIconToolTip("work", timeScale[scale].abbrev),
-        value: 20,
-        editableTooltip: false,
-        // stop: function(e) {
-        //     hourglass.setWorkTime(e.value * 1000 * timeScale[scale].multiplier);
-        // },
-     *  stop: updateSessionTime,
-        startAngle: 315
-    };
-
-    var breakSettings = {
-        radius: 70,
-        width: 13,
-     *  max: 30,
-        circleShape: "pie",
-        sliderType: "min-range",
-        showTooltip: true,
-     *  tooltipFormat: makeIconToolTip("rest", timeScale[scale].abbrev),
-     *  value: 10,
-        editableTooltip: false,
-        stop: function(e) {
-            hourglass.setBreakTime(e.value * 1000 * timeScale[scale].multiplier);
-        },
-        startAngle: 315
-    };
-    */
-    
-    /*
-    $("#sessionset").find("div").roundSlider(sessionSettings);
-    $("#breakset").find("div").roundSlider(breakSettings);
-    */
-    
-    // example:
-    // $("#sessionset").find("div").roundSlider("option", { "value": 5 });
-    
-
 });
