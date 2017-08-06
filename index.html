@@ -5,32 +5,98 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pomodoro</title>
+
     <link rel="stylesheet" 
-    href="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.css">
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.css">
+    <!--link rel="stylesheet" href="css/testbs1.css"-->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>FreeCodeCamp</h1>
-        <div class="row">
-            <div id="sessionset">
-                <div id="slider1"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 left">
+            <h1>FreeCodeCamp Pomodoro Project</h1>
+            <p>
+                This is my entry to the 
+                <a href="https://www.freecodecamp.com/challenges/build-a-pomodoro-clock">
+                    second challenge</a> of a serie of advanced front end
+                development projects toward the obtention of the 
+                <a href="https://www.freecodecamp.com/about">
+                    Front End Development Certificate</a> at 
+                <a href="https://www.freecodecamp.com">FreeCodeCamp</a>.
+            </p>
+            <p>
+                We are asked to build a  
+                <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
+                    >pomodoro timer</a> 
+                which can be reset and customized by the user. As we are
+                encouraged to build our own original design, I thought of a
+                simple animated hourglass in SVG in which flow is simulated by
+                resizing rectangles.  It turned to be a hugely bigger endeavor
+                than what I expected at first, and sunk an insane amount of
+                time in it.
+            </p>
+            <p>
+                So here it is, and to allow you to see the unfolding of the
+                full work-rest cycle, I added the option to set the time in
+                seconds. Unthick the box below to have it set in minutes.
+            </p>
+            <div id="checkTimeScale">
+                <input type="checkbox" name="seconds" checked="checked"> Time dialers scaled in seconds.<br />
             </div>
-            <div id="start">
-                <button >Start</button>
-            </div>
-            <div id="breakset">
-                <div id="slider2"></div>
-            </div>
+            <p>
+                The animation is built on the 
+                <a href="http://velocityjs.org/">velocity library</a>, and the 
+                time setting sliders on the 
+                <a href="http://roundsliderui.com">roundsliderui library</a>. Click
+                on the hourglass to start, and click again to reset. 
+            </p>
+            <p>
+                The animation is powered by 
+                <a href="http://velocityjs.org/">velocity</a> only when the
+                time is set to one minute or less. Otherwise, because velocity 
+                consume a lot of CPU resources with its continuous updating 
+                of element attributes, I wrote an attribute updating routine which
+                is triggered only once per second. That results in some 
+                resize jerks which become imperceptible when the time is
+                sufficiently large and use little CPU resources.
+            </p>
+            <p>
+                This is not a quite finished job. I hit a stumbling block when
+                trying to stop the animation chain for reset, and had to resort
+                to an expedient consisting of reloading the whole page.
+                Certainly, the code needs refactoring.  Any advice on this is
+                very appreciated.
+            </p>
         </div>
-        <div class="row">
+        <div class="col-md-8">
+            <div id="controls">
+                <div id="sessionset">
+                    <div id="slider1"></div>
+                </div>
+                <div id="breakset">
+                    <div id="slider2"></div>
+                </div>
+            </div>
             <div id="pom">
                 <div id="wholeHG">
-                    <div class="showtime" id="remain">16:30</div>
-                    <div class="showtime" id="runned">13:20</div>
 
-                    <svg id="hourglass" xmlns="http://www.w3.org/2000/svg" >
-                        <g id="liquideHaut">
+                    <svg class="img-responsive" id="hourglass" xmlns="http://www.w3.org/2000/svg"
+                        preserveAspectRatio="xMinYMin meet"
+                       viewBox="0 -20 500 530" > 
+                       <defs>
+                           <pattern id="woodHoriz" patternUnits="objectBoundingBox" width="40" height="4">
+                               <image xlink:href="img/wood1-400x40.jpg" x="0" y="0" width="400" height="40" />
+                           </pattern>
+                           <pattern id="woodHoriz2" patternUnits="objectBoundingBox" width="40" height="4">
+                               <image xlink:href="img/wood2-400x40.jpg" x="0" y="0" width="400" height="40" />
+                           </pattern>
+                           </defs>
+                       <g id="liquideHaut">
                             <rect x="100" y="85" width="300" height="180" />
                         </g>
                         <g id="liquideBas">
@@ -39,9 +105,9 @@
                         <g id="liquideFlux">
                             <rect x="247" y="265" width="6" height="200" />
                         </g>
-                       j
                         <g id="glass">
-                            <rect class="hgframe" x="50" y="25" rx="15" ry="15" width="400" height="40" />
+                            <rect class="hgframe" x="50" y="25" rx="15" ry="15" 
+                                width="400" height="40" fill="url(#woodHoriz)" />
                             <rect class="hgcol" x="80" y="65" width="20" height="400" />
                             <g id="liquidTurn">
                                 <rect x="100" y="325" width="300" height="140" />
@@ -55,18 +121,24 @@
                                 fill="white" 
                                 fill-opacity="1"
                                 stroke="blue"/>
-                            <rect class="hgcol" x="400" y="65" width="20" height="400" />
-                            <rect class="hgframe" x="50" y="465" rx="15" ry="15" width="400" height="40" />
+                            <rect class="hgcol" x="400" y="65" width="20" height="400"/>
+                            <!--rect class="hgframe" x="50" y="465" rx="15" ry="15" width="400" height="40" /-->
+                            <rect class="hgframe" x="50" y="465" rx="15" ry="15" 
+                                width="400" height="40" fill="url(#woodHoriz2)" />
                         </g>
+                       <text class="showtime" id="remain" x="160" y="180"></text>
+                       <text class="showtime" id="runned" x="160" y="425"></text>
                     </svg>
                 </div>
             </div>
         </div>
     </div>
+</div>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/jquery-2.0.0.min.js">\x3C/script>')</script>
 <script src="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.js"></script>
 <script src="http://cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+<script src="http://cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
 <script src="js/pom.js"></script>
+
 </body>
 </html>

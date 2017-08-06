@@ -3,8 +3,8 @@
 /* velocity.ui.js */
 
 $("div")
-  .velocity("transition.slideUpIn", 5250)
+  .velocity("transition.slideUpIn", 2250)
   .delay(700)
   .velocity({
-    opacity: 0
+    opacity: 0.8
   }, 750);

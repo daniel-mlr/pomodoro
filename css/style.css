@@ -1,105 +1,70 @@
-.container { 
-    /* margin top à ajuster avec javascript */
-    margin: 100px auto;
-    max-width: 500px;
-    border: 2px solid black;
+body {
+  font-family: "Helvetica Neue", Helvetica;
+  width: 90%;
+  font-weight: 200;
+  letter-spacing: 1px;
+  margin: 25px auto 0 auto;
 }
-h1 {
-    text-align: center;
+
+.left {
+  background: rgb(234, 235, 235);
+  color: rgb(25, 25, 25);
 }
-#sessionset {
-    float: left;
-    margin-left: 50px;
-    width: 140px;
-}
-#breakset {
-    float: right;
-    margin-right: 50px;
-    width: 140px;
-}
-#slider1 {
-    /*float: left;*/
-}
-#slider2 {
-    /*float: right;*/
-}
-#work-icon {
-}
-.slider-img {
+#controls {
     /*
-    position: absolute;
-    top: 30px;
-    left: 35px;
-    z-index: 10;
+    width: 100%;
+    display: block;
+    margin: auto;
+    */
+    margin-left: 23%;
+}
+#controls > div {
+    display: inline-block;
+    width: 45%;
+    /*
+    width: 180px;
+    margin: auto;
     */
 }
-#slider2 {
-}
-#pom {
-    position: relative;
-    clear:both;
-    text-align: center;
-    border: 2px solid black;
-    /*background-color: white;*/
-}
 #wholeHG {
+    /* 
     width: 500px;
+    display: inline-block;
+    */
+    z-index: 5;
 }
 svg {
     width: 500px;
     height: 530px;
+    display: block;
+    margin: auto;
 }
-#test1 {
+
+#checkTimeScale {
+    background-color: white;
+    border: 1px solid black;
+    padding-left: 10px;
+    margin-bottom: 10px;
 }
+
+/* ******************************* */
+/*          inside svg             */
+/* ******************************* */
+
 .showtime {
     font-size: 500%;
     font-family: Impact, Charcoal, sans-serif;
     font-style: italic;
     opacity: 0.1;
     text-align: center;
-    position: absolute;
-    left: 35%;
-    z-index: 1;
 }
-#remain {
-    top: 18%;
-    display: none;
-}
-#runned {
-    top: 65%;
-    display: none;
-}
+
 #glass {
     transform-origin: 50% 50%;
 }
-/*
-#haut.liquide {
-    position: absolute;
-    background-color: red;
-    top: 30px;
-    left: 48px;
-    left: 0;
-    height: 180px;
-    width: 400px;
-    z-index: -1;
+#remain {
 }
-#bas.liquide {
-    background-color: red;
-    height: 20px;
-    width: 300px;
-}
-#flux.liquide {
-    display: none;
-}
-*/
-#start {
-    display: block;
-    text-align: center;
-    width: 30px;
-}
-#hourglass {
-    position: relative;
-    top: 0px;
+#runned {
 }
 #liquideHaut {
     display: none;
@@ -119,7 +84,6 @@ svg {
 #liquideFlux rect{
     fill: #E40008;
 }
-
 #liquidTurn {
     fill: #E40008;
     display: none;
@@ -128,30 +92,32 @@ svg {
     fill: red;
 }
 
+/* **** houglass frame ****/
 .hgcol {
-    fill: #806A23;
-    stroke: black;
-    stroke-width: 3px;
+    fill: grey;
+    fill: #082764;
+    fill: #041B48;
 }
-.hgframe {
-    fill: blue; 
-    stroke: black;
-}
-.rs-range-color {
-    background-color: red;
-}
-.rs-tooltip {
+
+/* ************************
+ *    roundSlider         *
+ * ************************/
+
+.rs-tooltip div {
     /*border: 2px solid red;*/
-}
-#slider1 .rs-tooltip div {
     width: 70px;
     height: 90px;
 }
-#slider2 .rs-tooltip div {
-    width: 70px;
-    height: 90px;
+
+
+/*
+var tomatoRed = "#E40008";
+var tomatoGreen = "#547E35";
+*/
+
+#slider1 .rs-range-color {
+    background-color: #E40008;
 }
-.rs-tooltip > img {
-}
-#work-icon {
+#slider2 .rs-range-color {
+    background-color: #547E35;
 }
