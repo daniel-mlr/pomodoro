@@ -50,6 +50,7 @@ Thumbs.db
 *.swp
 */bootstrap*
 js/jquery*
+js/velocity.min.js
 Session.vim
 #img/*
 tags
